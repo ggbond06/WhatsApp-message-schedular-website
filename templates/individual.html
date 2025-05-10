@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp Message Scheduler</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center min-h-screen">
+  <form method="POST" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md space-y-5">
+    <h2 class="text-3xl font-bold text-center text-gray-800">🧑‍🦱 Individual Scheduler</h2>
+
+    <div>
+      <label for="phone" class="block mb-1 text-gray-700 font-medium">Phone Number</label>
+      <input id="phone" name="phone" type="text" placeholder="phone number" required
+             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" />
+    </div>
+
+    <div>
+      <label for="message" class="block mb-1 text-gray-700 font-medium">Message</label>
+      <textarea id="message" name="message" rows="4" placeholder="Your message" required
+                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+    </div>
+
+    <div class="flex gap-4">
+      <div class="w-1/2">
+        <label for="hour" class="block mb-1 text-gray-700 font-medium">Hour</label>
+        <input id="hour" name="hour" type="number" min="0" max="23"
+               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" />
+      </div>
+      <div class="w-1/2">
+        <label for="minute" class="block mb-1 text-gray-700 font-medium">Minute</label>
+        <input id="minute" name="minute" type="number" min="0" max="59"
+               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400" />
+      </div>
+    </div>
+
+    <button type="submit"
+            class="w-full bg-green-500 text-white text-lg font-semibold py-3 rounded-lg hover:bg-green-600 transition duration-200">
+      Schedule Message
+    </button>
+  </form>
+</body>
+</html>

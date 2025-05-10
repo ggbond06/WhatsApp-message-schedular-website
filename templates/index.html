@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp Scheduler Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Additional styles for the floating button */
+    #assistant-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4F46E5;
+      border-radius: 50%;
+      padding: 16px;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    #assistant-box {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 350px;
+      max-width: 100%;
+      background-color: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: none;
+      flex-direction: column;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    #assistant-box.show {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-10 rounded-2xl shadow-xl text-center space-y-6 max-w-md w-full">
+    <h1 class="text-3xl font-bold text-gray-800">Welcome to WhatsApp Scheduler</h1>
+    <h1 class="text-l font-bold text-red-500">⚠️ WhatsApp WEB only !!</h1>
+    <p class="text-gray-600">Choose what kind of message you want to schedule:</p>
+
+    <div class="space-y-4">
+      <a href="/individual" class="block w-full bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">
+        Schedule Individual Message
+      </a>
+      <a href="/group" class="block w-full bg-blue-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 transition">
+        Schedule Group Message
+      </a>
+      <a href="/picture" class="block w-full bg-purple-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-purple-600 transition">
+        Schedule Picture Message
+      </a>
+    </div>
+  </div>
+
+  <!-- GPT Assistant Pop-out -->
+  <div id="assistant-box" class="text-left space-y-3">
+    <h2 class="text-xl font-bold text-gray-800 text-center">🤖 GPT Assistant</h2>
+    <div id="chat-box" class="text-sm space-y-2 max-h-60 overflow-y-auto border p-3 rounded-md bg-white" style="min-height: 150px;"></div>
+    <input id="user-input" type="text" placeholder="Ask me anything..." class="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <button onclick="sendMessage()" class="w-full bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-600">Send</button>
+  </div>
+
+  <!-- Floating Assistant Button -->
+  <div id="assistant-button" onclick="toggleAssistant()">
+    💬
+  </div>
+
+  <script>
+    function toggleAssistant() {
+      const assistantBox = document.getElementById('assistant-box');
+      assistantBox.classList.toggle('show');
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const chatBox = document.getElementById("chat-box");
+      const message = input.value.trim();
+      if (!message) return;
+
+      chatBox.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
+      input.value = "";
+
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      chatBox.innerHTML += `<div><strong>GPT:</strong> ${data.reply}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
